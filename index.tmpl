@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+<body>
+    <h1>Index of </h1>
+    <table>
+        <thead>
+            <tr>
+                <td> # </td>
+                <td>Nom</td>
+                <td>Size (byte)</td>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range $k, $v := . }}
+                {{ if not $v.IsDir }}
+                <tr>
+                    <td>{{ $k }}</td>
+                    <td>
+                        <a href="javascript:dl('{{ $v.Name }}');">
+                            {{ $v.Name }}
+                        </a>
+                    </td>
+                    <td>{{ $v.Size }}</td>
+                </tr>
+                {{ end }}
+            {{ end }}
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        function dl(filename)
+        {
+            downloadURI("/dl?name="+filename, filename);
+        }
+
+        const downloadURI = (uri, name) => {
+            const link = document.createElement("a");
+            link.download = name;
+            link.href = uri;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+
+</body>
+</html>
